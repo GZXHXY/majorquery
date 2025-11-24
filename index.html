@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广州新华学院专业查询</title>
+    
+    <!-- 微信分享所需元数据 -->
+    <meta property="og:title" content="广州新华学院专业查询系统">
+    <meta property="og:description" content="快速查询广州新华学院各专业信息、收费标准及剩余名额">
+    <meta property="og:image" content="https://via.placeholder.com/300x300/1e5799/ffffff?text=广州新华学院">
+    <meta property="og:url" content="https://您的域名/">
+    <meta property="og:type" content="website">
+    
+    <!-- 微信特定标签 -->
+    <meta name="description" content="广州新华学院专业查询系统 - 快速查询各专业信息、收费标准及剩余名额">
+    <meta name="keywords" content="广州新华学院,专业查询,收费标准,剩余名额">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e5799, #207cca);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e5799, #207cca);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .header p {
+            font-size: 15px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .selection-area {
+            padding: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #1e5799;
+            font-size: 16px;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: "\f078";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1e5799;
+            pointer-events: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #fff;
+            appearance: none;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .form-select:focus {
+            border-color: #1e5799;
+            box-shadow: 0 0 0 3px rgba(30, 87, 153, 0.2);
+        }
+        
+        .result-area {
+            padding: 20px;
+            min-height: 200px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #1e5799;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .major-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1e5799;
+        }
+        
+        .major-category {
+            font-size: 14px;
+            color: #666;
+            background-color: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .detail-label {
+            flex: 0 0 120px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: #212529;
+        }
+        
+        .quota-high {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .quota-medium {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .quota-low {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .price-tag {
+            font-size: 20px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .no-selection {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .no-selection i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #adb5bd;
+        }
+        
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+        
+        .instructions {
+            background-color: #e7f3ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1e5799;
+        }
+        
+        .instructions h3 {
+            color: #1e5799;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .instructions p {
+            font-size: 14px;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .major-name {
+                font-size: 18px;
+            }
+            
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .major-category {
+                margin-top: 8px;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>广州新华学院专业查询</h1>
+            <p>快速查找专业信息及收费标准</p>
+        </div>
+        
+        <div class="selection-area">
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+                <p>1. 首先选择专业类别</p>
+                <p>2. 然后选择具体专业名称</p>
+                <p>3. 系统将自动显示专业详细信息</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="categorySelect"><i class="fas fa-list"></i> 第一步：选择专业类别</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="categorySelect">
+                        <option value="">请选择专业类别</option>
+                        <option value="经济管理类">经济管理类</option>
+                        <option value="语言教育类">语言教育类</option>
+                        <option value="医药学科类">医药学科类</option>
+                        <option value="低空经济类">低空经济类</option>
+                        <option value="信息技术类">信息技术类</option>
+                        <option value="艺术设计类">艺术设计类</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="majorSelect"><i class="fas fa-book"></i> 第二步：选择具体专业</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="majorSelect" disabled>
+                        <option value="">请先选择专业类别</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-area" id="resultArea">
+            <div class="no-selection">
+                <i class="fas fa-search"></i>
+                <p>请选择专业类别和具体专业查看详细信息</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>数据来源：广州新华学院招生信息 | 更新时间：2025年</p>
+            <p>本查询结果仅供参考，具体信息以学校官方公布为准</p>
+        </div>
+    </div>
+
+    <script>
+        // 专业数据 - 包含剩余名额信息（可以随时修改）
+        const majorData = [
+            { category: "经济管理类", name: "文秘", price: "9800元/人/学年", quota: 45 },
+            { category: "经济管理类", name: "行政管理", price: "9800元/人/学年", quota: 52 },
+            { category: "经济管理类", name: "人力资源管理", price: "9800元/人/学年", quota: 38 },
+            { category: "经济管理类", name: "市场营销", price: "9800元/人/学年", quota: 60 },
+            { category: "经济管理类", name: "旅游管理", price: "13800元/人/学年", quota: 42 },
+            { category: "经济管理类", name: "文化产业管理", price: "13800元/人/学年", quota: 35 },
+            { category: "经济管理类", name: "会计学", price: "14800元/人/学年", quota: 120 },
+            { category: "经济管理类", name: "国际经济与贸易", price: "14800元/人/学年", quota: 75 },
+            { category: "经济管理类", name: "金融学", price: "14800元/人/学年", quota: 88 },
+            { category: "经济管理类", name: "金融学（大数据金融方向）", price: "14800元/人/学年", quota: 55 },
+            { category: "经济管理类", name: "金融学（互联网金融方向）", price: "14800元/人/学年", quota: 48 },
+            { category: "经济管理类", name: "工程造价", price: "15800元/人/学年", quota: 65 },
+            { category: "经济管理类", name: "建筑工程技术", price: "15800元/人/学年", quota: 70 },
+            { category: "经济管理类", name: "工商管理", price: "16800元/人/学年", quota: 95 },
+            { category: "经济管理类", name: "工商管理（现代企业管理方向）", price: "16800元/人/学年", quota: 40 },
+            { category: "语言教育类", name: "商务英语", price: "16800元/人/学年", quota: 58 },
+            { category: "语言教育类", name: "汉语言文学", price: "16800元/人/学年", quota: 80 },
+            { category: "语言教育类", name: "教育学", price: "17800元/人/学年", quota: 45 },
+            { category: "语言教育类", name: "教育学（小学教育方向）", price: "17800元/人/学年", quota: 62 },
+            { category: "语言教育类", name: "教育学（学前教育方向）", price: "17800元/人/学年", quota: 78 },
+            { category: "医药学科类", name: "药品经营与管理", price: "17800元/人/学年", quota: 50 },
+            { category: "医药学科类", name: "食品卫生与营养学", price: "17800元/人/学年", quota: 40 },
+            { category: "低空经济类", name: "现代物流管理（无人机运输方向）", price: "17800元/人/学年", quota: 35 },
+            { category: "低空经济类", name: "计算机科学与技术（无人机技术与应用微方向）", price: "17800元/人/学年", quota: 30 },
+            { category: "信息技术类", name: "电子商务", price: "17800元/人/学年", quota: 85 },
+            { category: "信息技术类", name: "电子商务（跨境电商方向）", price: "17800元/人/学年", quota: 60 },
+            { category: "信息技术类", name: "电子商务（新媒体运营方向）", price: "17800元/人/学年", quota: 55 },
+            { category: "信息技术类", name: "计算机科学与技术", price: "17800元/人/学年", quota: 110 },
+            { category: "信息技术类", name: "计算机科学与技术（软件开发方向）", price: "17800元/人/学年", quota: 90 },
+            { category: "信息技术类", name: "计算机科学与技术（AI与云原生方向）", price: "17800元/人/学年", quota: 65 },
+            { category: "信息技术类", name: "计算机科学与技术（网络与信息安全方向）", price: "17800元/人/学年", quota: 70 },
+            { category: "信息技术类", name: "网络与信息安全", price: "17800元/人/学年", quota: 55 },
+            { category: "信息技术类", name: "网络与新媒体", price: "17800元/人/学年", quota: 75 },
+            { category: "艺术设计类", name: "数字媒体艺术", price: "18800元/人/学年", quota: 45 },
+            { category: "艺术设计类", name: "环境设计", price: "18800元/人/学年", quota: 50 },
+            { category: "艺术设计类", name: "视觉传达设计", price: "18800元/人/学年", quota: 60 },
+            { category: "艺术设计类", name: "视觉传达设计（动漫制作技术方向）", price: "18800元/人/学年", quota: 40 }
+        ];
+
+        // DOM元素
+        const categorySelect = document.getElementById('categorySelect');
+        const majorSelect = document.getElementById('majorSelect');
+        const resultArea = document.getElementById('resultArea');
+        
+        // 初始化页面
+        function initPage() {
+            // 添加类别选择事件监听
+            categorySelect.addEventListener('change', function() {
+                const selectedCategory = this.value;
+                
+                if (selectedCategory) {
+                    // 启用专业选择框
+                    majorSelect.disabled = false;
+                    
+                    // 清空专业选择框
+                    majorSelect.innerHTML = '<option value="">请选择具体专业</option>';
+                    
+                    // 过滤并添加该类别下的专业
+                    const categoryMajors = majorData.filter(major => major.category === selectedCategory);
+                    
+                    categoryMajors.forEach(major => {
+                        const option = document.createElement('option');
+                        option.value = major.name;
+                        option.textContent = major.name;
+                        majorSelect.appendChild(option);
+                    });
+                } else {
+                    // 如果没有选择类别，禁用专业选择框
+                    majorSelect.disabled = true;
+                    majorSelect.innerHTML = '<option value="">请先选择专业类别</option>';
+                    resultArea.innerHTML = '<div class="no-selection"><i class="fas fa-search"></i><p>请选择专业类别和具体专业查看详细信息</p></div>';
+                }
+            });
+            
+            // 添加专业选择事件监听
+            majorSelect.addEventListener('change', function() {
+                const selectedMajorName = this.value;
+                
+                if (selectedMajorName) {
+                    // 查找选中的专业
+                    const selectedMajor = majorData.find(major => 
+                        major.name === selectedMajorName && 
+                        major.category === categorySelect.value
+                    );
+                    
+                    if (selectedMajor) {
+                        displayMajorDetails(selectedMajor);
+                    }
+                } else {
+                    resultArea.innerHTML = '<div class="no-selection"><i class="fas fa-search"></i><p>请选择专业类别和具体专业查看详细信息</p></div>';
+                }
+            });
+        }
+        
+        // 显示专业详细信息
+        function displayMajorDetails(major) {
+            // 根据剩余名额确定显示样式
+            let quotaClass = 'quota-high';
+            if (major.quota < 30) {
+                quotaClass = 'quota-low';
+            } else if (major.quota < 50) {
+                quotaClass = 'quota-medium';
+            }
+            
+            resultArea.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="major-name">${major.name}</div>
+                        <div class="major-category">${major.category}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">收费标准：</div>
+                        <div class="detail-value price-tag">${major.price}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">剩余名额：</div>
+                        <div class="detail-value ${quotaClass}">${major.quota} 人</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">招生状态：</div>
+                        <div class="detail-value">
+                            ${major.quota > 0 ? 
+                                `<span class="quota-high"><i class="fas fa-check-circle"></i> 正在招生</span>` : 
+                                `<span class="quota-low"><i class="fas fa-times-circle"></i> 已满额</span>`
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row" style="border-bottom: none; padding-bottom: 0;">
+                        <div class="detail-label">温馨提示：</div>
+                        <div class="detail-value">
+                            ${major.quota > 40 ? 
+                                '名额充足，建议尽早报名' : 
+                                major.quota > 20 ? 
+                                '名额紧张，请尽快确认' : 
+                                '名额有限，建议联系招生办确认'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
